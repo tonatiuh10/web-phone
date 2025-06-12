@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Product;
 use App\Models\DetailsSale;
+use Illuminate\Support\Facades\DB;
+
 
 class TableSales extends Component
 {
@@ -55,13 +57,13 @@ class TableSales extends Component
     public function createSaleDetails($idSale){
         foreach($this->selectedProducts as $product){
             $qty=$product['quantity'];
-            dd($idSale);
-            DetailsSale::create([
+
+            DB::table('details_sale')->insert([
                 'sale_id' => $idSale,
                 'product_id' => $product['id'],
                 'qty' => $qty,
                 'unit_price' => $product['price'],
-                'subtotal' => $product['price'] * $qty,
+                'subtotal' => $product['price']*$qty,
                 'discount' => isset($product['discount']) ? $product['discount'] : 0
             ]);
         }
